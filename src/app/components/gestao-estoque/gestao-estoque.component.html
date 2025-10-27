@@ -1,0 +1,52 @@
+<section class="estoque">
+  <div class="p-grid p-gap-3">
+    <div class="col-12 lg-6">
+      <p-card header="Visao Geral">
+        <div *ngIf="summary as data" class="summary-grid">
+          <div>
+            <h4>Status</h4>
+            <ul>
+              <li *ngFor="let item of data.byStatus">
+                {{ item.status }}: <strong>{{ item.total }}</strong>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4>Modelos</h4>
+            <ul>
+              <li *ngFor="let item of data.byModel | slice:0:5">
+                {{ item.modelname || item.modelName }}: <strong>{{ item.total }}</strong>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </p-card>
+    </div>
+    <div class="col-12 lg-6">
+      <p-card header="Distribuicao por Marca">
+        <p-chart type="bar" [data]="chartData" [options]="chartOptions"></p-chart>
+      </p-card>
+    </div>
+  </div>
+
+  <p-card header="Motos com Dados Incompletos">
+    <p-table [value]="missing" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Marca</th>
+          <th>Modelo</th>
+          <th>Score</th>
+          <th>Status</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-moto>
+        <tr>
+          <td>{{ moto.brand?.name || '-' }}</td>
+          <td>{{ moto.modelName || '-' }}</td>
+          <td>{{ moto.completenessScore || 0 }}%</td>
+          <td>{{ moto.status }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</section>

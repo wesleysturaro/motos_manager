@@ -1,0 +1,72 @@
+<p-card>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="p-fluid p-formgrid p-grid">
+    <div class="p-field col-12 p-md-4">
+      <label>Loja *</label>
+      <p-dropdown formControlName="storeId" [options]="stores" optionLabel="name" optionValue="id" placeholder="Selecione"></p-dropdown>
+    </div>
+    <div class="p-field col-12 p-md-4">
+      <label>Marca *</label>
+      <p-dropdown formControlName="brandId" [options]="brands" optionLabel="name" optionValue="id" placeholder="Selecione"></p-dropdown>
+    </div>
+    <div class="p-field col-12 p-md-4">
+      <label>Modelo *</label>
+      <input pInputText formControlName="modelName" />
+    </div>
+    <div class="p-field col-12 p-md-4">
+      <label>Ano *</label>
+      <p-inputNumber formControlName="year" [useGrouping]="false"></p-inputNumber>
+    </div>
+    <div class="p-field col-12 p-md-4">
+      <label>Km *</label>
+      <p-inputNumber formControlName="km" suffix=" km"></p-inputNumber>
+    </div>
+    <div class="p-field col-12 p-md-4">
+      <label>Preco</label>
+      <p-inputNumber formControlName="price" mode="currency" currency="BRL"></p-inputNumber>
+    </div>
+    <div class="p-field col-12 p-md-4">
+      <label>Custo</label>
+      <p-inputNumber formControlName="cost" mode="currency" currency="BRL"></p-inputNumber>
+    </div>
+    <div class="p-field col-12 p-md-4">
+      <label>Gastos com documento</label>
+      <p-inputNumber formControlName="documentCost" mode="currency" currency="BRL"></p-inputNumber>
+    </div>
+    <div class="p-field col-12 p-md-4">
+      <label>Gastos com manutencao</label>
+      <p-inputNumber formControlName="maintenanceCost" mode="currency" currency="BRL"></p-inputNumber>
+    </div>
+    <div class="p-field col-12 p-md-4">
+      <label>Valor de entrada</label>
+      <p-inputNumber formControlName="downPayment" mode="currency" currency="BRL"></p-inputNumber>
+    </div>
+    <div class="p-field col-12 p-md-6">
+      <label>Cor</label>
+      <input pInputText formControlName="color" />
+    </div>
+    <div class="p-field col-12 p-md-6">
+      <label>Status</label>
+      <p-dropdown formControlName="status" [options]="[
+        { label: 'Disponivel', value: 'disponivel' },
+        { label: 'Reservada', value: 'reservada' },
+        { label: 'Vendida', value: 'vendida' },
+        { label: 'Manutencao', value: 'manutencao' }
+      ]"></p-dropdown>
+    </div>
+    <div class="p-field col-12 p-md-6">
+      <label>Nome do cliente</label>
+      <input pInputText formControlName="clientName" />
+    </div>
+    <div class="p-field col-12 p-md-6">
+      <label>Telefone do cliente</label>
+      <input pInputText formControlName="clientPhone" />
+    </div>
+    <div class="p-field col-12">
+      <label>Descricao</label>
+      <textarea pInputTextarea formControlName="description" rows="3"></textarea>
+    </div>
+    <div class="p-field col-12 submit-area">
+      <button pButton type="submit" label="Salvar" [disabled]="loading"></button>
+    </div>
+  </form>
+</p-card>

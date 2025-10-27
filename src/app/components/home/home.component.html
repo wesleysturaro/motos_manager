@@ -1,0 +1,36 @@
+<section class="home">
+  <p-card class="filter-card">
+    <form [formGroup]="filterForm" class="filters p-grid p-fluid" (ngSubmit)="$event.preventDefault()">
+      <div class="col-12 p-md-3">
+        <label class="filter-label">Marca</label>
+        <p-dropdown formControlName="brandId" [options]="brands" optionLabel="name" optionValue="id" placeholder="Selecione"></p-dropdown>
+      </div>
+      <div class="col-12 p-md-3">
+        <label class="filter-label">Modelo</label>
+        <input pInputText formControlName="modelName" placeholder="Ex: CB 500" />
+      </div>
+      <div class="col-6 p-md-3">
+        <label class="filter-label">Preco Min</label>
+        <p-inputNumber formControlName="minPrice" mode="currency" currency="BRL"></p-inputNumber>
+      </div>
+      <div class="col-6 p-md-3">
+        <label class="filter-label">Preco Max</label>
+        <p-inputNumber formControlName="maxPrice" mode="currency" currency="BRL"></p-inputNumber>
+      </div>
+      <div class="col-6 p-md-3">
+        <label class="filter-label">KM Min</label>
+        <p-inputNumber formControlName="minKm" suffix=" km"></p-inputNumber>
+      </div>
+      <div class="col-6 p-md-3">
+        <label class="filter-label">KM Max</label>
+        <p-inputNumber formControlName="maxKm" suffix=" km"></p-inputNumber>
+      </div>
+      <div class="col-12 actions">
+        <button pButton type="button" label="Limpar" class="p-button-text" (click)="clearFilters()"></button>
+        <button pButton type="button" label="Nova Moto" icon="pi pi-plus" (click)="goToCadastro()"></button>
+      </div>
+    </form>
+  </p-card>
+
+  <app-tabela-principal-estoque [filters]="activeFilters"></app-tabela-principal-estoque>
+</section>

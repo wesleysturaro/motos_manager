@@ -1,0 +1,44 @@
+<p-card>
+  <p-table [value]="motorcycles" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="loading" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Marca</th>
+        <th>Modelo</th>
+        <th>Ano</th>
+        <th>KM</th>
+        <th>Preco</th>
+        <th>Gasto Doc.</th>
+        <th>Gasto Manut.</th>
+        <th>Entrada</th>
+        <th>Cliente</th>
+        <th>Status</th>
+        <th>Acoes</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-moto>
+      <tr>
+        <td>{{ moto.brand?.name || '-' }}</td>
+        <td>{{ moto.modelName || '-' }}</td>
+        <td>{{ moto.year || '-' }}</td>
+        <td>{{ moto.km || 0 | number: '1.0-0' }} km</td>
+        <td>{{ moto.price || 0 | currency: 'BRL' }}</td>
+        <td>{{ moto.documentCost || 0 | currency: 'BRL' }}</td>
+        <td>{{ moto.maintenanceCost || 0 | currency: 'BRL' }}</td>
+        <td>{{ moto.downPayment || 0 | currency: 'BRL' }}</td>
+        <td>
+          <div class="customer-cell">
+            <div>{{ moto.clientName || '---' }}</div>
+            <small>{{ moto.clientPhone || '' }}</small>
+          </div>
+        </td>
+        <td>
+          <p-tag [value]="moto.status || 'N/D'" [severity]="getStatusSeverity(moto.status)"></p-tag>
+        </td>
+        <td>
+          <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-text" (click)="triggerEdit(moto)"></button>
+          <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger" (click)="triggerDelete(moto)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>
