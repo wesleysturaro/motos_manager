@@ -35,4 +35,11 @@ export class MotorcyclesService {
   deleteMotorcycle(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
+
+  uploadMotorcyclePhotos(id: string, files: File[], urls: string[] = []): Observable<Motorcycle> {
+    const formData = new FormData();
+    files.forEach((file) => formData.append('photos', file));
+    urls.forEach((url) => formData.append('urls', url));
+    return this.http.post<Motorcycle>(`${this.baseUrl}/${id}/photos`, formData);
+  }
 }

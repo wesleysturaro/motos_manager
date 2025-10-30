@@ -5,6 +5,7 @@ import { MainLayoutComponent } from './components/main-layout/main-layout.compon
 import { HomeComponent } from './components/home/home.component';
 import { FormularioCadastroMotoComponent } from './components/formulario-cadastro-moto/formulario-cadastro-moto.component';
 import { GestaoEstoqueComponent } from './components/gestao-estoque/gestao-estoque.component';
+import { VisualizarMotoComponent } from './components/visualizar-moto/visualizar-moto.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
     children: [
       { path: '', component: HomeComponent },
       { path: 'cadastro', component: FormularioCadastroMotoComponent },
+      { path: 'motos/:id', component: VisualizarMotoComponent },
       { path: 'estoque', component: GestaoEstoqueComponent },
     ],
   },

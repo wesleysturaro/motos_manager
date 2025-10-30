@@ -1,7 +1,9 @@
+<p-confirmDialog></p-confirmDialog>
 <p-card>
   <p-table [value]="motorcycles" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="loading" responsiveLayout="scroll">
     <ng-template pTemplate="header">
       <tr>
+        <th>Foto</th>
         <th>Marca</th>
         <th>Modelo</th>
         <th>Ano</th>
@@ -17,6 +19,12 @@
     </ng-template>
     <ng-template pTemplate="body" let-moto>
       <tr>
+        <td class="photo-cell">
+          <ng-container *ngIf="getPrimaryPhotoUrl(moto) as photoUrl; else noPhotos">
+            <img [src]="photoUrl" alt="Foto da moto" class="thumbnail" />
+          </ng-container>
+          <ng-template #noPhotos>Fotos indisponiveis</ng-template>
+        </td>
         <td>{{ moto.brand?.name || '-' }}</td>
         <td>{{ moto.modelName || '-' }}</td>
         <td>{{ moto.year || '-' }}</td>
@@ -36,6 +44,7 @@
         </td>
         <td>
           <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-text" (click)="triggerEdit(moto)"></button>
+          <button pButton type="button" icon="pi pi-eye" class="p-button-rounded p-button-text" (click)="triggerView(moto)"></button>
           <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger" (click)="triggerDelete(moto)"></button>
         </td>
       </tr>

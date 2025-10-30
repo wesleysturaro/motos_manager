@@ -65,6 +65,31 @@
       <label>Descricao</label>
       <textarea pInputTextarea formControlName="description" rows="3"></textarea>
     </div>
+    <div class="p-field col-12" *ngIf="showActions">
+      <label>Fotos da moto</label>
+      <p-fileUpload
+        #photoUploader
+        mode="advanced"
+        [showUploadButton]="false"
+        [showCancelButton]="false"
+        [customUpload]="true"
+        [multiple]="true"
+        accept="image/*"
+        [maxFileSize]="5242880"
+        chooseLabel="Selecionar fotos"
+        (onSelect)="onPhotoSelect($event)"
+        (onRemove)="onPhotoRemove($event)"
+        (onClear)="onPhotoClear()"
+        (uploadHandler)="onManualUpload($event)"
+      >
+      </p-fileUpload>
+      <div class="photo-previews" *ngIf="photoUploads.length > 0">
+        <div class="photo-preview" *ngFor="let photo of photoUploads">
+          <img *ngIf="photo.previewUrl" [src]="photo.previewUrl" [alt]="photo.file.name" />
+          <span>{{ photo.file.name }}</span>
+        </div>
+      </div>
+    </div>
     <div class="p-field col-12 submit-area">
       <button pButton type="submit" label="Salvar" [disabled]="loading"></button>
     </div>

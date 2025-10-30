@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BrandsService } from '../../services/brands.service';
 import { Brand } from '../../models/marca.model';
-import { MotorcycleFilters } from '../../models/moto.model';
+import { Motorcycle, MotorcycleFilters } from '../../models/moto.model';
+import { TabelaPrincipalEstoqueComponent } from '../tabela-principal-estoque/tabela-principal-estoque.component';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,9 @@ export class HomeComponent implements OnInit {
   filterForm!: FormGroup;
   brands: Brand[] = [];
   activeFilters: MotorcycleFilters = {};
+  displayEditDialog = false;
+  selectedMotorcycle: Motorcycle | null = null;
+  @ViewChild('estoqueTabela') estoqueTabela?: TabelaPrincipalEstoqueComponent;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -50,5 +54,24 @@ export class HomeComponent implements OnInit {
 
   goToCadastro(): void {
     this.router.navigate(['/cadastro']);
+  }
+
+  onEdit(moto: Motorcycle): void {
+    this.selectedMotorcycle = moto;
+    this.displayEditDialog = true;
+  }
+
+  onView(moto: Motorcycle): void {
+    this.router.navigate(['/motos', moto.id]);
+  }
+
+  onDialogHide(): void {
+    this.displayEditDialog = false;
+    this.selectedMotorcycle = null;
+  }
+
+  onMotorcycleSaved(_motorcycle: Motorcycle): void {
+    this.onDialogHide();
+    this.estoqueTabela?.loadData();
   }
 }

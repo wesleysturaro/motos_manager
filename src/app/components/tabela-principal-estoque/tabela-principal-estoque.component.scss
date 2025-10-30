@@ -3,3 +3,17 @@
   flex-direction: column;
   gap: 0.15rem;
 }
+
+.photo-cell {
+  width: 120px;
+}
+
+.photo-cell .thumbnail {
+  width: 100%;
+  max-width: 100px;
+  height: auto;
+  border-radius: 4px;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}

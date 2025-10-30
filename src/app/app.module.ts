@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
@@ -11,8 +12,9 @@ import { TabelaPrincipalEstoqueComponent } from './components/tabela-principal-e
 import { FormularioCadastroMotoComponent } from './components/formulario-cadastro-moto/formulario-cadastro-moto.component';
 import { GestaoEstoqueComponent } from './components/gestao-estoque/gestao-estoque.component';
 import { LoginComponent } from './components/login/login.component';
+import { VisualizarMotoComponent } from './components/visualizar-moto/visualizar-moto.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { SidebarModule } from 'primeng/sidebar';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { ButtonModule } from 'primeng/button';
@@ -29,6 +31,11 @@ import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { FileUploadModule } from 'primeng/fileupload';
+import { GalleriaModule } from 'primeng/galleria';
+import { CheckboxModule } from 'primeng/checkbox';
 import { appConfig } from './app.config';
 
 @NgModule({
@@ -41,9 +48,11 @@ import { appConfig } from './app.config';
     FormularioCadastroMotoComponent,
     GestaoEstoqueComponent,
     LoginComponent,
+    VisualizarMotoComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     CommonModule,
     HttpClientModule,
     ReactiveFormsModule,
@@ -64,10 +73,16 @@ import { appConfig } from './app.config';
     TagModule,
     ToolbarModule,
     ProgressSpinnerModule,
+    DialogModule,
+    ConfirmDialogModule,
+    FileUploadModule,
+    GalleriaModule,
+    CheckboxModule,
   ],
   providers: [
     ...appConfig.providers,
     MessageService,
+    ConfirmationService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
