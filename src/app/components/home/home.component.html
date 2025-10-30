@@ -1,27 +1,32 @@
 <section class="home">
   <p-card class="filter-card">
     <form [formGroup]="filterForm" class="filters p-grid p-fluid" (ngSubmit)="$event.preventDefault()">
-      <div class="flex md-3">
+      <div class="flex flex-column md:flex-row flex-wrap gap-3">
         <div class="col">
           <label class="filter-label">Marca</label>
           <p-dropdown formControlName="brandId" [options]="brands" optionLabel="name" optionValue="id" placeholder="Selecione"></p-dropdown>
         </div>
+
         <div class="col">
           <label class="filter-label">Modelo</label>
           <input pInputText formControlName="modelName" placeholder="Ex: CB 500" />
         </div>
+
         <div class="col">
-          <label class="filter-label">Preco Min</label>
+          <label class="filter-label">Preço Min</label>
           <p-inputNumber formControlName="minPrice" mode="currency" currency="BRL"></p-inputNumber>
         </div>
+
         <div class="col">
-          <label class="filter-label">Preco Max</label>
+          <label class="filter-label">Preço Max</label>
           <p-inputNumber formControlName="maxPrice" mode="currency" currency="BRL"></p-inputNumber>
         </div>
+
         <div class="col">
           <label class="filter-label">KM Min</label>
           <p-inputNumber formControlName="minKm" suffix=" km"></p-inputNumber>
         </div>
+
         <div class="col">
           <label class="filter-label">KM Max</label>
           <p-inputNumber formControlName="maxKm" suffix=" km"></p-inputNumber>
@@ -47,6 +52,7 @@
     [modal]="true"
     [closable]="true"
     [dismissableMask]="true"
+    appendTo="body"
     [style]="{ width: '900px', maxWidth: '95vw' }"
     (onHide)="onDialogHide()"
   >
