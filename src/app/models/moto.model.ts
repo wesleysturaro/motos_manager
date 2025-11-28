@@ -7,6 +7,7 @@ export interface Motorcycle {
   brand?: Brand | null;
   modelName: string;
   year?: number | null;
+  modelYear?: number | null;
   color?: string | null;
   vin?: string | null;
   plate?: string | null;
@@ -40,6 +41,7 @@ export interface MotorcycleFilters {
   modelName?: string;
   status?: string;
   year?: number;
+  modelYear?: number;
   minPrice?: number;
   maxPrice?: number;
   minKm?: number;

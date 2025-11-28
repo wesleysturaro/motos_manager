@@ -1,11 +1,71 @@
 .home {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
-.filter-card {
-  background: var(--rleo-light);
+.hero {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.hero__text {
+  padding: 1.5rem;
+  border-radius: 18px;
+  background: var(--rleo-card);
+  border: 1px solid var(--rleo-border);
+  box-shadow: var(--rleo-shadow);
+}
+
+.hero__actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.hero__card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 12px;
+  background: rgba(245, 180, 0, 0.16);
+  font-weight: 700;
+}
+
+.hero__highlights {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.hero__highlights strong {
+  display: block;
+  font-size: 1.1rem;
+}
+
+.hero__highlights .label {
+  display: block;
+  color: var(--rleo-muted);
+  margin-bottom: 0.2rem;
+  font-size: 0.85rem;
+}
+
+.filter-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .filters {
@@ -14,14 +74,14 @@
 
 .filter-label {
   display: block;
-  margin-bottom: 0.5rem;
-  font-size: 0.85rem;
-  font-weight: 600;
+  margin-bottom: 0.35rem;
+  font-size: 0.9rem;
+  font-weight: 700;
   color: var(--rleo-dark);
 }
 
-.actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
+@media (max-width: 992px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
 }

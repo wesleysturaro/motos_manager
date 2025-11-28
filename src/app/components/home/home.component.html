@@ -1,40 +1,83 @@
 <section class="home">
-  <p-card class="filter-card">
-    <form [formGroup]="filterForm" class="filters p-grid p-fluid" (ngSubmit)="$event.preventDefault()">
-      <div class="flex flex-column md:flex-row flex-wrap gap-3">
-        <div class="col">
-          <label class="filter-label">Marca</label>
-          <p-dropdown formControlName="brandId" [options]="brands" optionLabel="name" optionValue="id" placeholder="Selecione"></p-dropdown>
+  <div class="hero">
+    <div class="hero__text">
+      <span class="pill">Painel de estoque</span>
+      <h1 class="page-title">Motos RLeo</h1>
+      <p class="muted">
+        Filtros rapidos, edicao simplificada.
+      </p>
+      <div class="hero__actions">
+        <button pButton type="button" label="Nova moto" icon="pi pi-plus" (click)="goToCadastro()"></button>
+        <button pButton type="button" class="p-button-text" label="Limpar filtros" icon="pi pi-filter-slash" (click)="clearFilters()"></button>
+      </div>
+    </div>
+    <div class="hero__card section-card">
+      <div class="hero__badge">
+        <i class="pi pi-bolt"></i>
+        Fluxo otimizado
+      </div>
+      <p class="muted">Use os filtros abaixo e abra a moto em modal para editar sem sair da lista.</p>
+      <div class="hero__highlights">
+        <div>
+          <span class="label">KM & Preco</span>
+          <strong>Faixas em paralelo</strong>
         </div>
-
-        <div class="col">
-          <label class="filter-label">Modelo</label>
-          <input pInputText formControlName="modelName" placeholder="Ex: CB 500" />
-        </div>
-
-        <div class="col">
-          <label class="filter-label">Preço Min</label>
-          <p-inputNumber formControlName="minPrice" mode="currency" currency="BRL"></p-inputNumber>
-        </div>
-
-        <div class="col">
-          <label class="filter-label">Preço Max</label>
-          <p-inputNumber formControlName="maxPrice" mode="currency" currency="BRL"></p-inputNumber>
-        </div>
-
-        <div class="col">
-          <label class="filter-label">KM Min</label>
-          <p-inputNumber formControlName="minKm" suffix=" km"></p-inputNumber>
-        </div>
-
-        <div class="col">
-          <label class="filter-label">KM Max</label>
-          <p-inputNumber formControlName="maxKm" suffix=" km"></p-inputNumber>
+        <div>
+          <span class="label">Anos</span>
+          <strong>Fabricacao + modelo</strong>
         </div>
       </div>
-      <div class="col-12 actions">
-        <button pButton type="button" label="Limpar" class="p-button-text" (click)="clearFilters()"></button>
-        <button pButton type="button" label="Nova Moto" icon="pi pi-plus" (click)="goToCadastro()"></button>
+    </div>
+  </div>
+
+  <p-card class="filter-card">
+    <div class="filter-card__header">
+      <div>
+        <div class="pill muted">Filtros refinados</div>
+        <h3>Busque em segundos</h3>
+        <p class="muted">Combine marca, modelo, preco, quilometragem e anos sem travar o fluxo.</p>
+      </div>
+    </div>
+
+    <form [formGroup]="filterForm" class="filters grid" (ngSubmit)="$event.preventDefault()">
+      <div class="col-12 md:col-3">
+        <label class="filter-label">Marca</label>
+        <p-dropdown formControlName="brandId" [options]="brands" optionLabel="name" optionValue="id" placeholder="Selecione"></p-dropdown>
+      </div>
+
+      <div class="col-12 md:col-3">
+        <label class="filter-label">Modelo</label>
+        <input pInputText formControlName="modelName" placeholder="Ex: CB 500" />
+      </div>
+
+      <div class="col-6 md:col-2">
+        <label class="filter-label">Preco min.</label>
+        <p-inputNumber formControlName="minPrice" mode="currency" currency="BRL"></p-inputNumber>
+      </div>
+
+      <div class="col-6 md:col-2">
+        <label class="filter-label">Preco max.</label>
+        <p-inputNumber formControlName="maxPrice" mode="currency" currency="BRL"></p-inputNumber>
+      </div>
+
+      <div class="col-6 md:col-2">
+        <label class="filter-label">KM min.</label>
+        <p-inputNumber formControlName="minKm" suffix=" km"></p-inputNumber>
+      </div>
+
+      <div class="col-6 md:col-2">
+        <label class="filter-label">KM max.</label>
+        <p-inputNumber formControlName="maxKm" suffix=" km"></p-inputNumber>
+      </div>
+
+      <div class="col-6 md:col-2">
+        <label class="filter-label">Ano fab.</label>
+        <p-inputNumber formControlName="year" [useGrouping]="false"></p-inputNumber>
+      </div>
+
+      <div class="col-6 md:col-2">
+        <label class="filter-label">Ano modelo</label>
+        <p-inputNumber formControlName="modelYear" [useGrouping]="false"></p-inputNumber>
       </div>
     </form>
   </p-card>

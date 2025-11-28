@@ -45,11 +45,11 @@ export class VisualizarMotoComponent implements OnInit {
   missingFields: string[] = [];
 
   statusOptions = [
-    { label: 'Disponível', value: 'disponivel' },
+    { label: 'Disponivel', value: 'disponivel' },
     { label: 'Reservada', value: 'reservada' },
     { label: 'Vendida', value: 'vendida' },
-    { label: 'Manutenção', value: 'manutencao' },
-    { label: 'Informação pendente', value: 'informacao_pendente' },
+    { label: 'Manutencao', value: 'manutencao' },
+    { label: 'Informacao pendente', value: 'informacao_pendente' },
   ];
 
   fuelOptions = [
@@ -57,14 +57,14 @@ export class VisualizarMotoComponent implements OnInit {
     { label: 'Etanol', value: 'etanol' },
     { label: 'Flex', value: 'flex' },
     { label: 'Diesel', value: 'diesel' },
-    { label: 'Elétrico', value: 'eletrico' },
-    { label: 'Híbrido', value: 'hibrido' },
+    { label: 'Eletrico', value: 'eletrico' },
+    { label: 'Hibrido', value: 'hibrido' },
   ];
 
   transmissionOptions = [
     { label: 'Manual', value: 'manual' },
-    { label: 'Automática', value: 'automatica' },
-    { label: 'Semi-automática', value: 'semi_automatica' },
+    { label: 'Automatica', value: 'automatica' },
+    { label: 'Semi-automatica', value: 'semi_automatica' },
   ];
 
   constructor(
@@ -86,7 +86,7 @@ export class VisualizarMotoComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: 'Moto não encontrada.',
+          detail: 'Moto nao encontrada.',
         });
         this.router.navigate(['/']);
         return;
@@ -113,6 +113,7 @@ export class VisualizarMotoComponent implements OnInit {
           detail: 'Moto atualizada!',
         });
         this.motorcycle = updated;
+        this.vendaComLucro = this.calculateVendaComLucro(updated);
         this.completenessScore = updated.completenessScore ?? 0;
         this.missingFields = (updated as any).missingFields ?? [];
         this.prepareImages(updated);
@@ -123,7 +124,7 @@ export class VisualizarMotoComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: 'Não foi possível atualizar a moto.',
+          detail: 'Nao foi possivel atualizar a moto.',
         });
       },
     });
@@ -131,10 +132,11 @@ export class VisualizarMotoComponent implements OnInit {
 
   private initForm(): void {
     this.form = this.fb.group({
-      storeId: ['', Validators.required],
-      brandId: ['', Validators.required],
-      modelName: ['', Validators.required],
+      storeId: [''],
+      brandId: [''],
+      modelName: [''],
       year: [null, [Validators.min(1900)]],
+      modelYear: [null, [Validators.min(1900)]],
       color: [''],
       vin: [''],
       plate: [''],
@@ -144,7 +146,7 @@ export class VisualizarMotoComponent implements OnInit {
       documentCost: [null, [Validators.min(0)]],
       maintenanceCost: [null, [Validators.min(0)]],
       downPayment: [null, [Validators.min(0)]],
-      status: ['disponivel', Validators.required],
+      status: ['disponivel'],
       fuel: [''],
       engineCc: [null, [Validators.min(0)]],
       powerHp: [null, [Validators.min(0)]],
@@ -169,9 +171,7 @@ export class VisualizarMotoComponent implements OnInit {
     this.motorcyclesService.getMotorcycle(this.motorcycleId).subscribe({
       next: (moto) => {
         this.motorcycle = moto;
-        const precoBase = parseFloat(String(moto.price ?? 0));
-        const precoComLucro = precoBase + 2500;
-        this.vendaComLucro = precoComLucro;
+        this.vendaComLucro = this.calculateVendaComLucro(moto);
         this.completenessScore = moto.completenessScore ?? 0;
         this.missingFields = (moto as any).missingFields ?? [];
         this.prepareImages(moto);
@@ -183,7 +183,7 @@ export class VisualizarMotoComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: 'Não foi possível carregar os dados da moto.',
+          detail: 'Nao foi possivel carregar os dados da moto.',
         });
         this.router.navigate(['/']);
       },
@@ -202,6 +202,7 @@ export class VisualizarMotoComponent implements OnInit {
       brandId: moto.brand?.id ?? '',
       modelName: moto.modelName ?? '',
       year: moto.year ?? null,
+      modelYear: moto.modelYear ?? null,
       color: moto.color ?? '',
       vin: moto.vin ?? '',
       plate: moto.plate ?? '',
@@ -277,6 +278,7 @@ export class VisualizarMotoComponent implements OnInit {
       brandId: formValue.brandId,
       modelName: toStringOrNull(formValue.modelName),
       year: toNumber(formValue.year),
+      modelYear: toNumber(formValue.modelYear),
       color: toStringOrNull(formValue.color),
       vin: toStringOrNull(formValue.vin),
       plate: toStringOrNull(formValue.plate),
@@ -313,5 +315,19 @@ export class VisualizarMotoComponent implements OnInit {
 
     const apiBase = environment.apiUrl.replace(/\/api\/?$/, '');
     return `${apiBase}/${trimmed.replace(/^\/+/, '')}`;
+  }
+
+  private calculateVendaComLucro(moto: Motorcycle): number {
+    const toNumber = (value: unknown): number => {
+      const parsed = Number(value ?? 0);
+      return Number.isFinite(parsed) ? parsed : 0;
+    };
+
+    const precoBase = toNumber(moto.price);
+    const doc = toNumber(moto.documentCost);
+    const manut = toNumber(moto.maintenanceCost);
+    const margem = 2000;
+
+    return precoBase + doc + manut + margem;
   }
 }

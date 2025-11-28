@@ -1,12 +1,29 @@
 <p-confirmDialog></p-confirmDialog>
-<p-card>
-  <p-table [value]="motorcycles" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" [loading]="loading" responsiveLayout="scroll">
+
+<p-card class="estoque-card">
+  <div class="table-header">
+    <div>
+      <h3>Estoque atualizado</h3>
+      <p class="muted">Visual limpo, cards fluidos e acoes rapidas para editar ou abrir detalhes.</p>
+    </div>
+    <span class="pill">Clique para visualizar em modal</span>
+  </div>
+
+  <p-table
+    [value]="motorcycles"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 20, 50]"
+    [loading]="loading"
+    responsiveLayout="scroll"
+    styleClass="modern-table"
+  >
     <ng-template pTemplate="header">
       <tr>
         <th>Foto</th>
         <th>Marca</th>
         <th>Modelo</th>
-        <th>Ano</th>
+        <th>Ano/Modelo</th>
         <th>KM</th>
         <th>Preco</th>
         <th>Gasto Doc.</th>
@@ -23,11 +40,11 @@
           <ng-container *ngIf="getPrimaryPhotoUrl(moto) as photoUrl; else noPhotos">
             <img [src]="photoUrl" alt="Foto da moto" class="thumbnail" />
           </ng-container>
-          <ng-template #noPhotos>Fotos indisponiveis</ng-template>
+          <ng-template #noPhotos>Sem fotos</ng-template>
         </td>
         <td>{{ moto.brand?.name || '-' }}</td>
         <td>{{ moto.modelName || '-' }}</td>
-        <td>{{ moto.year || '-' }}</td>
+        <td>{{ moto.year || '-' }}/{{ moto.modelYear || '-' }}</td>
         <td>{{ moto.km || 0 | number: '1.0-0' }} km</td>
         <td>{{ moto.price || 0 | currency: 'BRL' }}</td>
         <td>{{ moto.documentCost || 0 | currency: 'BRL' }}</td>
@@ -42,7 +59,7 @@
         <td>
           <p-tag [value]="moto.status || 'N/D'" [severity]="getStatusSeverity(moto.status)"></p-tag>
         </td>
-        <td>
+        <td class="actions-cell">
           <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-text" (click)="triggerEdit(moto)"></button>
           <button pButton type="button" icon="pi pi-eye" class="p-button-rounded p-button-text" (click)="triggerView(moto)"></button>
           <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger" (click)="triggerDelete(moto)"></button>

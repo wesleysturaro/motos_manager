@@ -1,1 +1,76 @@
-﻿@import "primeicons/primeicons.css";
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import "primeicons/primeicons.css";
+
+:root {
+  --rleo-primary: #f5b400;
+  --rleo-primary-strong: #c98c00;
+  --rleo-dark: #1c1914;
+  --rleo-surface: #f4f4f4;
+  --rleo-light: #ffffff;
+  --rleo-muted: #7a6c53;
+  --rleo-card: #ffffff;
+  --rleo-border: #e5e5e5;
+  --rleo-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--rleo-surface);
+  color: var(--rleo-dark);
+  -webkit-font-smoothing: antialiased;
+}
+
+p-card {
+  display: block;
+  border: 1px solid var(--rleo-border);
+  border-radius: 18px;
+  box-shadow: var(--rleo-shadow);
+  background: var(--rleo-card);
+}
+
+.p-component {
+  font-family: 'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.page-title {
+  margin: 0 0 0.4rem;
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  margin: 0 0 1rem;
+  color: var(--rleo-muted);
+}
+
+.section-card {
+  padding: 1.25rem;
+  border-radius: 18px;
+  border: 1px solid var(--rleo-border);
+  background: #fffef9;
+  box-shadow: var(--rleo-shadow);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(245, 180, 0, 0.16);
+  color: var(--rleo-dark);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.muted {
+  color: var(--rleo-muted);
+}

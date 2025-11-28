@@ -1,6 +1,6 @@
 .menu-lateral {
   width: 280px;
-  background: var(--rleo-dark);
+  background: #11100f;
   color: var(--rleo-light);
   padding: 1.5rem 1rem;
   min-height: 100vh;
@@ -10,7 +10,7 @@
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
-  color: var(--rleo-accent);
+  color: var(--rleo-primary);
 }
 
 :host ::ng-deep .p-panelmenu .p-panelmenu-header > a {
@@ -20,6 +20,7 @@
 
 :host ::ng-deep .p-panelmenu .p-menuitem-link {
   border-radius: 0.5rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .menu-lateral--hidden {

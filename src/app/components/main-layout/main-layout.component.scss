@@ -16,8 +16,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 1.5rem;
-  background: var(--rleo-dark);
-  color: var(--rleo-light);
+  background: var(--rleo-light);
+  color: var(--rleo-dark);
+  border-bottom: 1px solid var(--rleo-border);
 }
 
 .layout__brand .brand-name {
@@ -35,7 +36,7 @@
 .layout__main {
   flex: 1;
   padding: 1.5rem;
-  background: var(--rleo-light);
+  background: var(--rleo-surface);
 }
 
 @media (max-width: 992px) {

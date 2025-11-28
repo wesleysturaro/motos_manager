@@ -52,8 +52,9 @@ export class FormularioCadastroMotoComponent implements OnInit, OnChanges {
       storeId: ['', Validators.required],
       brandId: ['', Validators.required],
       modelName: ['', Validators.required],
-      year: [null, [Validators.required, Validators.min(1970)]],
-      km: [null, [Validators.required, Validators.min(0)]],
+      year: [null, [Validators.min(1970)]],
+      modelYear: [null, [Validators.min(1970)]],
+      km: [null, [Validators.min(0)]],
       price: [null, [Validators.min(0)]],
       cost: [null, [Validators.min(0)]],
       documentCost: [null, [Validators.min(0)]],
@@ -64,6 +65,8 @@ export class FormularioCadastroMotoComponent implements OnInit, OnChanges {
       description: [''],
       clientName: [''],
       clientPhone: [''],
+      vin: [''],
+      plate: [''],
     });
 
     this.loadLookups();
@@ -84,7 +87,6 @@ export class FormularioCadastroMotoComponent implements OnInit, OnChanges {
   }
 
   onPhotoSelect(event: FileSelectEvent): void {
-    console.log(event)
     event.currentFiles.forEach((file) => {
       const key = this.buildFileKey(file);
       if (this.photoUploads.some((item) => item.key === key)) {
@@ -138,6 +140,7 @@ export class FormularioCadastroMotoComponent implements OnInit, OnChanges {
       brandId: moto.brand?.id ?? '',
       modelName: moto.modelName ?? '',
       year: moto.year ?? null,
+      modelYear: moto.modelYear ?? null,
       km: moto.km ?? null,
       price: toNumber(moto.price),
       cost: toNumber(moto.cost),
@@ -149,12 +152,19 @@ export class FormularioCadastroMotoComponent implements OnInit, OnChanges {
       description: moto.description ?? '',
       clientName: moto.clientName ?? '',
       clientPhone: moto.clientPhone ?? '',
+      vin: moto.vin ?? '',
+      plate: moto.plate ?? '',
     });
   }
 
   submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Campos minimos',
+        detail: 'Informe loja, marca e modelo para salvar.',
+      });
       return;
     }
 
@@ -162,12 +172,15 @@ export class FormularioCadastroMotoComponent implements OnInit, OnChanges {
     const isEditing = !!this.initialMotorcycle?.id;
     const payload = {
       ...this.form.value,
+      modelYear: this.form.value.modelYear ?? undefined,
       price: this.form.value.price ?? undefined,
       cost: this.form.value.cost ?? undefined,
       documentCost: this.form.value.documentCost ?? undefined,
       maintenanceCost: this.form.value.maintenanceCost ?? undefined,
       downPayment: this.form.value.downPayment ?? undefined,
-      km: this.form.value.km ?? 0,
+      km: this.form.value.km ?? undefined,
+      vin: this.form.value.vin?.trim() || undefined,
+      plate: this.form.value.plate?.trim() || undefined,
     };
     const successMessage = isEditing ? 'Moto atualizada!' : 'Moto cadastrada!';
     const uploadErrorMessage = isEditing

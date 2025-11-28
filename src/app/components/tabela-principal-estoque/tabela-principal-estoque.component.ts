@@ -41,6 +41,11 @@ export class TabelaPrincipalEstoqueComponent implements OnInit, OnChanges {
       next: (data) => {
         this.motorcycles = data.map((moto) => ({
           ...moto,
+          year: moto.year !== null && moto.year !== undefined ? Number(moto.year) : null,
+          modelYear:
+            moto.modelYear !== null && moto.modelYear !== undefined
+              ? Number(moto.modelYear)
+              : null,
           price: moto.price !== null && moto.price !== undefined ? Number(moto.price) : null,
           cost: moto.cost !== null && moto.cost !== undefined ? Number(moto.cost) : null,
           documentCost:

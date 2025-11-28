@@ -1,97 +1,133 @@
-<p-card>
-  <form [formGroup]="form" (ngSubmit)="submit()" class="p-fluid p-formgrid p-grid">
-    <div class="p-field col-12 p-md-4">
-      <label>Loja *</label>
-      <p-dropdown formControlName="storeId" [options]="stores" optionLabel="name" optionValue="id" placeholder="Selecione"></p-dropdown>
+<p-card class="form-card">
+  <div class="form-header">
+    <div>
+      <span class="pill">{{ editDialog ? 'Edicao rapida' : 'Cadastro de moto' }}</span>
+      <h3>{{ editDialog ? 'Editar moto' : 'Nova moto com menos atrito' }}</h3>
+      <p class="muted">Campos flexiveis e upload simplificado.</p>
     </div>
-    <div class="p-field col-12 p-md-4">
-      <label>Marca *</label>
-      <p-dropdown formControlName="brandId" [options]="brands" optionLabel="name" optionValue="id" placeholder="Selecione"></p-dropdown>
+    <div class="header-highlights">
+      <span class="pill muted">Anos de fabricacao e modelo</span>
     </div>
-    <div class="p-field col-12 p-md-4">
-      <label>Modelo *</label>
-      <input pInputText formControlName="modelName" />
-    </div>
-    <div class="p-field col-12 p-md-4">
-      <label>Ano *</label>
-      <p-inputNumber formControlName="year" [useGrouping]="false"></p-inputNumber>
-    </div>
-    <div class="p-field col-12 p-md-4">
-      <label>Km *</label>
-      <p-inputNumber formControlName="km" suffix=" km"></p-inputNumber>
-    </div>
-    <div class="p-field col-12 p-md-4">
-      <label>Preco</label>
-      <p-inputNumber formControlName="price" mode="currency" currency="BRL"></p-inputNumber>
-    </div>
-    <div class="p-field col-12 p-md-4">
-      <label>Custo</label>
-      <p-inputNumber formControlName="cost" mode="currency" currency="BRL"></p-inputNumber>
-    </div>
-    <div class="p-field col-12 p-md-4">
-      <label>Gastos com documento</label>
-      <p-inputNumber formControlName="documentCost" mode="currency" currency="BRL"></p-inputNumber>
-    </div>
-    <div class="p-field col-12 p-md-4">
-      <label>Gastos com manutencao</label>
-      <p-inputNumber formControlName="maintenanceCost" mode="currency" currency="BRL"></p-inputNumber>
-    </div>
-    <div class="p-field col-12 p-md-4">
-      <label>Valor de entrada</label>
-      <p-inputNumber formControlName="downPayment" mode="currency" currency="BRL"></p-inputNumber>
-    </div>
-    <div class="p-field col-12 p-md-6">
-      <label>Cor</label>
-      <input pInputText formControlName="color" />
-    </div>
-    <div class="p-field col-12 p-md-6">
-      <label>Status</label>
-      <p-dropdown formControlName="status" [options]="[
-        { label: 'Disponivel', value: 'disponivel' },
-        { label: 'Reservada', value: 'reservada' },
-        { label: 'Vendida', value: 'vendida' },
-        { label: 'Manutencao', value: 'manutencao' }
-      ]"></p-dropdown>
-    </div>
-    <div class="p-field col-12 p-md-6">
-      <label>Nome do cliente</label>
-      <input pInputText formControlName="clientName" />
-    </div>
-    <div class="p-field col-12 p-md-6">
-      <label>Telefone do cliente</label>
-      <input pInputText formControlName="clientPhone" />
-    </div>
-    <div class="p-field col-12">
-      <label>Descricao</label>
-      <textarea pInputTextarea formControlName="description" rows="3"></textarea>
-    </div>
-    <div class="p-field col-12" *ngIf="showActions">
-      <label>Fotos da moto</label>
-      <p-fileUpload
-        #photoUploader
-        mode="advanced"
-        [showUploadButton]="false"
-        [showCancelButton]="false"
-        [customUpload]="true"
-        [multiple]="true"
-        accept="image/*"
-        [maxFileSize]="5242880"
-        chooseLabel="Selecionar fotos"
-        (onSelect)="onPhotoSelect($event)"
-        (onRemove)="onPhotoRemove($event)"
-        (onClear)="onPhotoClear()"
-        (uploadHandler)="onManualUpload($event)"
-      >
-      </p-fileUpload>
-      <div class="photo-previews" *ngIf="photoUploads.length > 0">
-        <div class="photo-preview" *ngFor="let photo of photoUploads">
-          <img *ngIf="photo.previewUrl" [src]="photo.previewUrl" [alt]="photo.file.name" />
-          <span>{{ photo.file.name }}</span>
+  </div>
+
+  <div class="grid form-layout">
+    <div class="col-12">
+      <form [formGroup]="form" (ngSubmit)="submit()" class="p-fluid">
+        <div class="grid form-grid">
+          <div class="field col-6">
+            <label>Loja *</label>
+            <p-dropdown formControlName="storeId" [options]="stores" optionLabel="name" optionValue="id" placeholder="Selecione"></p-dropdown>
+          </div>
+          <div class="field col-6">
+            <label>Marca *</label>
+            <p-dropdown formControlName="brandId" [options]="brands" optionLabel="name" optionValue="id" placeholder="Selecione"></p-dropdown>
+          </div>
+          <div class="field col-6">
+            <label>Modelo *</label>
+            <input pInputText formControlName="modelName" placeholder="Ex: CB 500X" />
+          </div>
+
+          <div class="field col-6">
+            <label>Ano fabricacao</label>
+            <p-inputNumber formControlName="year" [useGrouping]="false"></p-inputNumber>
+          </div>
+          <div class="field col-6">
+            <label>Ano modelo</label>
+            <p-inputNumber formControlName="modelYear" [useGrouping]="false"></p-inputNumber>
+          </div>
+          <div class="field col-6">
+            <label>KM</label>
+            <p-inputNumber formControlName="km" suffix=" km"></p-inputNumber>
+          </div>
+          <div class="field col-6">
+            <label>Status</label>
+            <p-dropdown formControlName="status" [options]="[
+              { label: 'Disponivel', value: 'disponivel' },
+              { label: 'Reservada', value: 'reservada' },
+              { label: 'Vendida', value: 'vendida' },
+              { label: 'Manutencao', value: 'manutencao' }
+            ]"></p-dropdown>
+          </div>
+
+          <div class="field col-6">
+            <label>Preco (FIPE manual)</label>
+            <p-inputNumber formControlName="price" mode="currency" currency="BRL"></p-inputNumber>
+          </div>
+          <div class="field col-6">
+            <label>Custo</label>
+            <p-inputNumber formControlName="cost" mode="currency" currency="BRL"></p-inputNumber>
+          </div>
+          <div class="field col-6">
+            <label>Entrada</label>
+            <p-inputNumber formControlName="downPayment" mode="currency" currency="BRL"></p-inputNumber>
+          </div>
+          <div class="field col-6">
+            <label>Gastos com documento</label>
+            <p-inputNumber formControlName="documentCost" mode="currency" currency="BRL"></p-inputNumber>
+          </div>
+
+          <div class="field col-6">
+            <label>Gastos com manutencao</label>
+            <p-inputNumber formControlName="maintenanceCost" mode="currency" currency="BRL"></p-inputNumber>
+          </div>
+          <div class="field col-6">
+            <label>Placa</label>
+            <input pInputText formControlName="plate" />
+          </div>
+          <div class="field col-6">
+            <label>VIN</label>
+            <input pInputText formControlName="vin" />
+          </div>
+
+          <div class="field col-12">
+            <label>Cor</label>
+            <input pInputText formControlName="color" />
+          </div>
+          <div class="field col-12">
+            <label>Nome do cliente</label>
+            <input pInputText formControlName="clientName" />
+          </div>
+          <div class="field col-12">
+            <label>Telefone do cliente</label>
+            <input pInputText formControlName="clientPhone" />
+          </div>
+
+          <div class="field col-12">
+            <label>Descricao</label>
+            <textarea pInputTextarea formControlName="description" rows="3"></textarea>
+          </div>
+
+          <div class="field col-12">
+            <label>Fotos da moto</label>
+            <p-fileUpload
+              #photoUploader
+              mode="advanced"
+              [showUploadButton]="false"
+              [showCancelButton]="false"
+              [customUpload]="true"
+              [multiple]="true"
+              accept="image/*"
+              [maxFileSize]="5242880"
+              chooseLabel="Selecionar fotos"
+              (onSelect)="onPhotoSelect($event)"
+              (onRemove)="onPhotoRemove($event)"
+              (onClear)="onPhotoClear()"
+              (uploadHandler)="onManualUpload($event)"
+            >
+            </p-fileUpload>
+            <div class="photo-previews" *ngIf="photoUploads.length > 0">
+              <div class="photo-preview" *ngFor="let photo of photoUploads">
+                <img *ngIf="photo.previewUrl" [src]="photo.previewUrl" [alt]="photo.file.name" />
+                <span>{{ photo.file.name }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 submit-area">
+            <button pButton type="submit" label="Salvar" [disabled]="loading"></button>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
-    <div class="p-field col-12 submit-area">
-      <button pButton type="submit" label="Salvar" [disabled]="loading"></button>
-    </div>
-  </form>
+  </div>
 </p-card>

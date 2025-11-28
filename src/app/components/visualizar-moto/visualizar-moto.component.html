@@ -8,215 +8,230 @@
 
   <ng-template #content>
     <div class="page-header" *ngIf="motorcycle">
-      <h2>{{ motorcycle.modelName }}</h2>
-      <h2>{{'Valor de venda para lucro: R$' + vendaComLucro}}</h2>
-      <div class="header-meta">
-        <p-tag [value]="motorcycle.status || 'N/D'" [severity]="getStatusSeverity(motorcycle.status)"></p-tag>
-        <span *ngIf="completenessScore">Score de completude: {{ completenessScore }}%</span>
+      <div>
+        <span class="pill">Ficha da moto</span>
+        <h2>{{ motorcycle.modelName }}</h2>
+        <div class="header-meta">
+          <p-tag [value]="motorcycle.status || 'N/D'" [severity]="getStatusSeverity(motorcycle.status)"></p-tag>
+          <span *ngIf="completenessScore">Score: {{ completenessScore }}%</span>
+          <span *ngIf="vendaComLucro">Venda c/ lucro: {{ vendaComLucro | currency: 'BRL' }}</span>
+        </div>
       </div>
     </div>
 
-    <p-card class="media-card">
-      <ng-container *ngIf="images.length > 0; else noPhotos">
-        <p-galleria
-          [value]="images"
-          [numVisible]="5"
-          [responsiveOptions]="responsiveOptions"
-          [showItemNavigators]="true"
-          [showThumbnails]="true"
-          [containerStyle]="{ 'max-width': '500px', margin: '0 auto' }"
-        >
-          <ng-template pTemplate="item" let-item>
-            <img [src]="item.itemImageSrc" [alt]="item.alt" />
+    <div class="grid">
+      <div class="col-12 lg:col-5">
+        <p-card class="media-card">
+          <ng-container *ngIf="images.length > 0; else noPhotos">
+            <p-galleria
+              [value]="images"
+              [numVisible]="5"
+              [responsiveOptions]="responsiveOptions"
+              [showItemNavigators]="true"
+              [showThumbnails]="true"
+              [containerStyle]="{ 'max-width': '520px', margin: '0 auto' }"
+            >
+              <ng-template pTemplate="item" let-item>
+                <img [src]="item.itemImageSrc" [alt]="item.alt" />
+              </ng-template>
+              <ng-template pTemplate="thumbnail" let-item>
+                <img [src]="item.thumbnailImageSrc" [alt]="item.alt" />
+              </ng-template>
+            </p-galleria>
+          </ng-container>
+
+          <ng-template #noPhotos>
+            <div class="no-photos">Fotos indisponiveis para esta moto.</div>
           </ng-template>
-          <ng-template pTemplate="thumbnail" let-item>
-            <img [src]="item.thumbnailImageSrc" [alt]="item.alt" />
-          </ng-template>
-        </p-galleria>
-      </ng-container>
-
-      <ng-template #noPhotos>
-        <div class="no-photos">Fotos indisponíveis para esta moto.</div>
-      </ng-template>
-    </p-card>
-
-    <p-card class="details-card">
-      <form [formGroup]="form" (ngSubmit)="submit()" class="p-fluid p-formgrid p-grid">
-        <div class="flex flex-column field col-12 p-md-4">
-          <label for="storeId">Loja</label>
-          <p-dropdown
-            inputId="storeId"
-            formControlName="storeId"
-            [options]="stores"
-            optionLabel="name"
-            optionValue="id"
-            placeholder="Selecione"
-          ></p-dropdown>
-        </div>
-
-        <div class="flex flex-column field col-12 p-md-4">
-          <label for="brandId">Marca</label>
-          <p-dropdown
-            inputId="brandId"
-            formControlName="brandId"
-            [options]="brands"
-            optionLabel="name"
-            optionValue="id"
-            placeholder="Selecione"
-          ></p-dropdown>
-        </div>
-
-        <div class="flex flex-column field col-12 p-md-4">
-          <label for="modelName">Modelo</label>
-          <input id="modelName" pInputText formControlName="modelName" />
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="year">Ano</label>
-          <p-inputNumber inputId="year" formControlName="year" [useGrouping]="false"></p-inputNumber>
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="km">KM</label>
-          <p-inputNumber inputId="km" formControlName="km" suffix=" km"></p-inputNumber>
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="status">Status</label>
-          <p-dropdown
-            inputId="status"
-            formControlName="status"
-            [options]="statusOptions"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Selecione"
-          ></p-dropdown>
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="fuel">Combustível</label>
-          <p-dropdown
-            inputId="fuel"
-            formControlName="fuel"
-            [options]="fuelOptions"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Selecione"
-          ></p-dropdown>
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="price">Preço</label>
-          <p-inputNumber inputId="price" formControlName="price" mode="currency" currency="BRL"></p-inputNumber>
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="cost">Custo</label>
-          <p-inputNumber inputId="cost" formControlName="cost" mode="currency" currency="BRL"></p-inputNumber>
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="documentCost">Gasto Doc.</label>
-          <p-inputNumber inputId="documentCost" formControlName="documentCost" mode="currency" currency="BRL"></p-inputNumber>
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="maintenanceCost">Gasto Manut.</label>
-          <p-inputNumber
-            inputId="maintenanceCost"
-            formControlName="maintenanceCost"
-            mode="currency"
-            currency="BRL"
-          ></p-inputNumber>
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="downPayment">Entrada</label>
-          <p-inputNumber inputId="downPayment" formControlName="downPayment" mode="currency" currency="BRL"></p-inputNumber>
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="engineCc">Cilindradas</label>
-          <p-inputNumber inputId="engineCc" formControlName="engineCc" suffix=" cc"></p-inputNumber>
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="powerHp">Potência (HP)</label>
-          <p-inputNumber inputId="powerHp" formControlName="powerHp" suffix=" hp"></p-inputNumber>
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="torqueNm">Torque (Nm)</label>
-          <p-inputNumber inputId="torqueNm" formControlName="torqueNm" suffix=" Nm"></p-inputNumber>
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="transmission">Transmissão</label>
-          <p-dropdown
-            inputId="transmission"
-            formControlName="transmission"
-            [options]="transmissionOptions"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Selecione"
-          ></p-dropdown>
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="color">Cor</label>
-          <input id="color" pInputText formControlName="color" />
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="plate">Placa</label>
-          <input id="plate" pInputText formControlName="plate" />
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="vin">VIN</label>
-          <input id="vin" pInputText formControlName="vin" />
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="clientName">Cliente</label>
-          <input id="clientName" pInputText formControlName="clientName" />
-        </div>
-
-        <div class="flex flex-column field col-12 md-3">
-          <label for="clientPhone">Telefone</label>
-          <input id="clientPhone" pInputText formControlName="clientPhone" />
-        </div>
-
-        <div class="flex flex-row field-checkbox col-12 md-3">
-          <div class="flex mr-3 gap-1">
-            <label for="abs">ABS</label>
-            <p-checkbox inputId="abs" formControlName="abs" binary="true"></p-checkbox>
-          </div>
-          <div class="flex mr-3 gap-1">
-            <label for="hasDocumentation">Documentação</label>
-            <p-checkbox inputId="hasDocumentation" formControlName="hasDocumentation" binary="true"></p-checkbox>
-          </div>
-          <div class="flex gap-1">
-            <label for="hasInspection">Vistoria</label>
-            <p-checkbox inputId="hasInspection" formControlName="hasInspection" binary="true"></p-checkbox>
-          </div>
-        </div>
-
-        <div class="flex flex-column field col-12">
-          <label for="description">Descrição</label>
-          <textarea id="description" pInputTextarea formControlName="description" rows="4"></textarea>
-        </div>
-
-        <div class="flex flex-column field col-12 actions">
-          <button pButton type="submit" label="Salvar alterações" [disabled]="saving || loading"></button>
-        </div>
-      </form>
-
-      <div class="meta-info" *ngIf="motorcycle">
-        <div>Cadastro: {{ motorcycle.createdAt | date: 'short' }}</div>
-        <div>Última atualização: {{ motorcycle.updatedAt | date: 'short' }}</div>
-        <div *ngIf="missingFields.length">Campos pendentes: {{ missingFields.join(', ') }}</div>
+        </p-card>
       </div>
-    </p-card>
+
+      <div class="col-12 lg:col-7">
+        <p-card class="details-card">
+          <form [formGroup]="form" (ngSubmit)="submit()" class="p-fluid grid form-grid">
+            <div class="field col-12 md:col-4">
+              <label for="storeId">Loja</label>
+              <p-dropdown
+                inputId="storeId"
+                formControlName="storeId"
+                [options]="stores"
+                optionLabel="name"
+                optionValue="id"
+                placeholder="Selecione"
+              ></p-dropdown>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="brandId">Marca</label>
+              <p-dropdown
+                inputId="brandId"
+                formControlName="brandId"
+                [options]="brands"
+                optionLabel="name"
+                optionValue="id"
+                placeholder="Selecione"
+              ></p-dropdown>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="modelName">Modelo</label>
+              <input id="modelName" pInputText formControlName="modelName" />
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="year">Ano fab.</label>
+              <p-inputNumber inputId="year" formControlName="year" [useGrouping]="false"></p-inputNumber>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="modelYear">Ano modelo</label>
+              <p-inputNumber inputId="modelYear" formControlName="modelYear" [useGrouping]="false"></p-inputNumber>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="km">KM</label>
+              <p-inputNumber inputId="km" formControlName="km" suffix=" km"></p-inputNumber>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="status">Status</label>
+              <p-dropdown
+                inputId="status"
+                formControlName="status"
+                [options]="statusOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Selecione"
+              ></p-dropdown>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="fuel">Combustivel</label>
+              <p-dropdown
+                inputId="fuel"
+                formControlName="fuel"
+                [options]="fuelOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Selecione"
+              ></p-dropdown>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="transmission">Transmissao</label>
+              <p-dropdown
+                inputId="transmission"
+                formControlName="transmission"
+                [options]="transmissionOptions"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Selecione"
+              ></p-dropdown>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="abs">ABS</label>
+              <p-checkbox inputId="abs" formControlName="abs" binary="true"></p-checkbox>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="price">Preco (FIPE)</label>
+              <p-inputNumber inputId="price" formControlName="price" mode="currency" currency="BRL"></p-inputNumber>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="cost">Custo</label>
+              <p-inputNumber inputId="cost" formControlName="cost" mode="currency" currency="BRL"></p-inputNumber>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="downPayment">Entrada</label>
+              <p-inputNumber inputId="downPayment" formControlName="downPayment" mode="currency" currency="BRL"></p-inputNumber>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="documentCost">Gasto doc.</label>
+              <p-inputNumber inputId="documentCost" formControlName="documentCost" mode="currency" currency="BRL"></p-inputNumber>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="maintenanceCost">Gasto manut.</label>
+              <p-inputNumber
+                inputId="maintenanceCost"
+                formControlName="maintenanceCost"
+                mode="currency"
+                currency="BRL"
+              ></p-inputNumber>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="engineCc">Cilindradas</label>
+              <p-inputNumber inputId="engineCc" formControlName="engineCc" suffix=" cc"></p-inputNumber>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="powerHp">Potencia (HP)</label>
+              <p-inputNumber inputId="powerHp" formControlName="powerHp" suffix=" hp"></p-inputNumber>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="torqueNm">Torque (Nm)</label>
+              <p-inputNumber inputId="torqueNm" formControlName="torqueNm" suffix=" Nm"></p-inputNumber>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="color">Cor</label>
+              <input id="color" pInputText formControlName="color" />
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="plate">Placa</label>
+              <input id="plate" pInputText formControlName="plate" />
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="vin">VIN</label>
+              <input id="vin" pInputText formControlName="vin" />
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="clientName">Cliente</label>
+              <input id="clientName" pInputText formControlName="clientName" />
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="clientPhone">Telefone</label>
+              <input id="clientPhone" pInputText formControlName="clientPhone" />
+            </div>
+
+            <div class="field col-12 md:col-4 field-checkbox">
+              <div class="flex gap-2 align-items-center">
+                <label for="hasDocumentation">Documentacao</label>
+                <p-checkbox inputId="hasDocumentation" formControlName="hasDocumentation" binary="true"></p-checkbox>
+              </div>
+              <div class="flex gap-2 align-items-center">
+                <label for="hasInspection">Vistoria</label>
+                <p-checkbox inputId="hasInspection" formControlName="hasInspection" binary="true"></p-checkbox>
+              </div>
+            </div>
+
+            <div class="field col-12">
+              <label for="description">Descricao</label>
+              <textarea id="description" pInputTextarea formControlName="description" rows="4"></textarea>
+            </div>
+
+            <div class="col-12 actions">
+              <button pButton type="submit" label="Salvar alteracoes" [disabled]="saving || loading"></button>
+            </div>
+          </form>
+
+          <div class="meta-info" *ngIf="motorcycle">
+            <div>Cadastro: {{ motorcycle.createdAt | date: 'short' }}</div>
+            <div>Ultima atualizacao: {{ motorcycle.updatedAt | date: 'short' }}</div>
+            <div *ngIf="missingFields.length">Campos pendentes: {{ missingFields.join(', ') }}</div>
+          </div>
+        </p-card>
+      </div>
+    </div>
   </ng-template>
 </section>

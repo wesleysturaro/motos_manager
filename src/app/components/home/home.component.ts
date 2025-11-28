@@ -34,6 +34,8 @@ export class HomeComponent implements OnInit {
       maxPrice: [null],
       minKm: [null],
       maxKm: [null],
+      year: [null],
+      modelYear: [null],
     });
 
     this.loadBrands();
@@ -48,7 +50,7 @@ export class HomeComponent implements OnInit {
   }
 
   clearFilters(): void {
-    this.filterForm.reset({ brandId: '', modelName: '' });
+    this.filterForm.reset({ brandId: '', modelName: '', year: null, modelYear: null });
     this.activeFilters = {};
   }
 
