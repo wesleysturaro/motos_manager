@@ -18,6 +18,10 @@ export class MainLayoutComponent {
     return this.authService.getCurrentUser();
   }
 
+  get isViewerOrClient(): boolean {
+    return this.authService.isViewerOrClient();
+  }
+
   toggleSidebar(): void {
     this.sidebarVisible = !this.sidebarVisible;
   }

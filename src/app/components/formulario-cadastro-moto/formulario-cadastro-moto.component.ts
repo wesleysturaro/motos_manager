@@ -55,8 +55,8 @@ export class FormularioCadastroMotoComponent implements OnInit, OnChanges {
       year: [null, [Validators.min(1970)]],
       modelYear: [null, [Validators.min(1970)]],
       km: [null, [Validators.min(0)]],
-      price: [null, [Validators.min(0)]],
-      cost: [null, [Validators.min(0)]],
+      fipePrice: [null, [Validators.min(0)]],
+      suggestedPrice: [null, [Validators.min(0)]],
       documentCost: [null, [Validators.min(0)]],
       maintenanceCost: [null, [Validators.min(0)]],
       downPayment: [null, [Validators.min(0)]],
@@ -142,8 +142,8 @@ export class FormularioCadastroMotoComponent implements OnInit, OnChanges {
       year: moto.year ?? null,
       modelYear: moto.modelYear ?? null,
       km: moto.km ?? null,
-      price: toNumber(moto.price),
-      cost: toNumber(moto.cost),
+      fipePrice: toNumber(moto.fipePrice),
+      suggestedPrice: toNumber(moto.suggestedPrice),
       documentCost: toNumber(moto.documentCost),
       maintenanceCost: toNumber(moto.maintenanceCost),
       downPayment: toNumber(moto.downPayment),
@@ -173,8 +173,8 @@ export class FormularioCadastroMotoComponent implements OnInit, OnChanges {
     const payload = {
       ...this.form.value,
       modelYear: this.form.value.modelYear ?? undefined,
-      price: this.form.value.price ?? undefined,
-      cost: this.form.value.cost ?? undefined,
+      fipePrice: this.form.value.fipePrice ?? undefined,
+      suggestedPrice: this.form.value.suggestedPrice ?? undefined,
       documentCost: this.form.value.documentCost ?? undefined,
       maintenanceCost: this.form.value.maintenanceCost ?? undefined,
       downPayment: this.form.value.downPayment ?? undefined,
@@ -232,6 +232,12 @@ export class FormularioCadastroMotoComponent implements OnInit, OnChanges {
     }
 
     this.router.navigate(['/']);
+  }
+
+  getTotalExpenses(): number {
+    const documentCost = this.form?.get('documentCost')?.value ?? 0;
+    const maintenanceCost = this.form?.get('maintenanceCost')?.value ?? 0;
+    return Number(documentCost) + Number(maintenanceCost);
   }
 
   private buildFileKey(file: File): string {

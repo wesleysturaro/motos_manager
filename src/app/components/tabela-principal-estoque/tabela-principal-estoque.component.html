@@ -25,13 +25,16 @@
         <th>Modelo</th>
         <th>Ano/Modelo</th>
         <th>KM</th>
-        <th>Preco</th>
-        <th>Gasto Doc.</th>
-        <th>Gasto Manut.</th>
-        <th>Entrada</th>
-        <th>Cliente</th>
-        <th>Status</th>
-        <th>Acoes</th>
+        <th *ngIf="!isViewer">Preço FIPE</th>
+        <th>{{ isViewer ? 'Valor' : 'Preço Sugerido' }}</th>
+        <th *ngIf="!isViewer">Total Gastos</th>
+        <th *ngIf="!isViewer">Gasto Doc.</th>
+        <th *ngIf="!isViewer">Gasto Manut.</th>
+        <th *ngIf="!isViewer">Entrada</th>
+        <th *ngIf="!isViewer">Cliente</th>
+        <th *ngIf="!isViewer">Status</th>
+        <th *ngIf="!isViewer">Acoes</th>
+        <th *ngIf="isViewer">Ações</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-moto>
@@ -46,23 +49,28 @@
         <td>{{ moto.modelName || '-' }}</td>
         <td>{{ moto.year || '-' }}/{{ moto.modelYear || '-' }}</td>
         <td>{{ moto.km || 0 | number: '1.0-0' }} km</td>
-        <td>{{ moto.price || 0 | currency: 'BRL' }}</td>
-        <td>{{ moto.documentCost || 0 | currency: 'BRL' }}</td>
-        <td>{{ moto.maintenanceCost || 0 | currency: 'BRL' }}</td>
-        <td>{{ moto.downPayment || 0 | currency: 'BRL' }}</td>
-        <td>
+        <td *ngIf="!isViewer">{{ moto.fipePrice || 0 | currency: 'BRL' }}</td>
+        <td>{{ moto.suggestedPrice || 0 | currency: 'BRL' }}</td>
+        <td *ngIf="!isViewer">{{ getTotalExpenses(moto) | currency: 'BRL' }}</td>
+        <td *ngIf="!isViewer">{{ moto.documentCost || 0 | currency: 'BRL' }}</td>
+        <td *ngIf="!isViewer">{{ moto.maintenanceCost || 0 | currency: 'BRL' }}</td>
+        <td *ngIf="!isViewer">{{ moto.downPayment || 0 | currency: 'BRL' }}</td>
+        <td *ngIf="!isViewer">
           <div class="customer-cell">
             <div>{{ moto.clientName || '---' }}</div>
             <small>{{ moto.clientPhone || '' }}</small>
           </div>
         </td>
-        <td>
+        <td *ngIf="!isViewer">
           <p-tag [value]="moto.status || 'N/D'" [severity]="getStatusSeverity(moto.status)"></p-tag>
         </td>
-        <td class="actions-cell">
+        <td class="actions-cell" *ngIf="!isViewer">
           <button pButton type="button" icon="pi pi-pencil" class="p-button-rounded p-button-text" (click)="triggerEdit(moto)"></button>
           <button pButton type="button" icon="pi pi-eye" class="p-button-rounded p-button-text" (click)="triggerView(moto)"></button>
           <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger" (click)="triggerDelete(moto)"></button>
+        </td>
+        <td class="actions-cell" *ngIf="isViewer">
+          <button pButton type="button" label="Ver Detalhes" icon="pi pi-eye" class="p-button-sm" (click)="triggerView(moto)"></button>
         </td>
       </tr>
     </ng-template>

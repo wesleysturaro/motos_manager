@@ -2,6 +2,7 @@
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Motorcycle, MotorcycleFilters } from '../../models/moto.model';
 import { MotorcyclesService } from '../../services/motorcycles.service';
+import { AuthService } from '../../services/auth.service';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -18,14 +19,17 @@ export class TabelaPrincipalEstoqueComponent implements OnInit, OnChanges {
 
   motorcycles: Motorcycle[] = [];
   loading = false;
+  isViewer = false;
 
   constructor(
     private readonly motorcyclesService: MotorcyclesService,
+    private readonly authService: AuthService,
     private readonly confirmationService: ConfirmationService,
     private readonly messageService: MessageService,
   ) {}
 
   ngOnInit(): void {
+    this.isViewer = this.authService.isViewer();
     this.loadData();
   }
 
@@ -37,7 +41,13 @@ export class TabelaPrincipalEstoqueComponent implements OnInit, OnChanges {
 
   loadData(): void {
     this.loading = true;
-    this.motorcyclesService.getMotorcycles(this.filters ?? {}).subscribe({
+    
+    // Para viewers, sempre filtrar apenas motos disponíveis
+    const effectiveFilters = this.isViewer 
+      ? { ...this.filters, status: 'disponivel' }
+      : this.filters ?? {};
+
+    this.motorcyclesService.getMotorcycles(effectiveFilters).subscribe({
       next: (data) => {
         this.motorcycles = data.map((moto) => ({
           ...moto,
@@ -46,8 +56,8 @@ export class TabelaPrincipalEstoqueComponent implements OnInit, OnChanges {
             moto.modelYear !== null && moto.modelYear !== undefined
               ? Number(moto.modelYear)
               : null,
-          price: moto.price !== null && moto.price !== undefined ? Number(moto.price) : null,
-          cost: moto.cost !== null && moto.cost !== undefined ? Number(moto.cost) : null,
+          fipePrice: moto.fipePrice !== null && moto.fipePrice !== undefined ? Number(moto.fipePrice) : null,
+          suggestedPrice: moto.suggestedPrice !== null && moto.suggestedPrice !== undefined ? Number(moto.suggestedPrice) : null,
           documentCost:
             moto.documentCost !== null && moto.documentCost !== undefined
               ? Number(moto.documentCost)
@@ -125,6 +135,12 @@ export class TabelaPrincipalEstoqueComponent implements OnInit, OnChanges {
 
     const apiBase = environment.apiUrl.replace(/\/api\/?$/, '');
     return `${apiBase}/${path.replace(/^\/+/, '')}`;
+  }
+
+  getTotalExpenses(moto: Motorcycle): number {
+    const documentCost = typeof moto.documentCost === 'number' ? moto.documentCost : 0;
+    const maintenanceCost = typeof moto.maintenanceCost === 'number' ? moto.maintenanceCost : 0;
+    return documentCost + maintenanceCost;
   }
 
   private deleteMotorcycle(moto: Motorcycle): void {

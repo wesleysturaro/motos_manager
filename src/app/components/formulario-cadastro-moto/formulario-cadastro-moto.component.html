@@ -50,16 +50,12 @@
           </div>
 
           <div class="field col-6">
-            <label>Preco (FIPE manual)</label>
-            <p-inputNumber formControlName="price" mode="currency" currency="BRL"></p-inputNumber>
+            <label>Preço Tabela FIPE</label>
+            <p-inputNumber formControlName="fipePrice" mode="currency" currency="BRL"></p-inputNumber>
           </div>
           <div class="field col-6">
-            <label>Custo</label>
-            <p-inputNumber formControlName="cost" mode="currency" currency="BRL"></p-inputNumber>
-          </div>
-          <div class="field col-6">
-            <label>Entrada</label>
-            <p-inputNumber formControlName="downPayment" mode="currency" currency="BRL"></p-inputNumber>
+            <label>Preço Sugerido para Venda</label>
+            <p-inputNumber formControlName="suggestedPrice" mode="currency" currency="BRL"></p-inputNumber>
           </div>
           <div class="field col-6">
             <label>Gastos com documento</label>
@@ -67,8 +63,16 @@
           </div>
 
           <div class="field col-6">
-            <label>Gastos com manutencao</label>
+            <label>Gastos com manutenção</label>
             <p-inputNumber formControlName="maintenanceCost" mode="currency" currency="BRL"></p-inputNumber>
+          </div>
+          <div class="field col-6">
+            <label>Total de Gastos (Calculado)</label>
+            <p-inputNumber [ngModel]="getTotalExpenses()" [ngModelOptions]="{standalone: true}" mode="currency" currency="BRL" [disabled]="true"></p-inputNumber>
+          </div>
+          <div class="field col-6">
+            <label>Entrada</label>
+            <p-inputNumber formControlName="downPayment" mode="currency" currency="BRL"></p-inputNumber>
           </div>
           <div class="field col-6">
             <label>Placa</label>

@@ -49,6 +49,27 @@ export class AuthService {
     return userRaw ? (JSON.parse(userRaw) as User) : null;
   }
 
+  hasRole(role: string): boolean {
+    const user = this.getCurrentUser();
+    return user?.roles?.includes(role) ?? false;
+  }
+
+  isViewer(): boolean {
+    return this.hasRole('viewer');
+  }
+
+  isClient(): boolean {
+    return this.hasRole('client');
+  }
+
+  isViewerOrClient(): boolean {
+    return this.isViewer() || this.isClient();
+  }
+
+  isAdmin(): boolean {
+    return this.hasRole('admin');
+  }
+
   private persistSession(response: AuthResponse): void {
     sessionStorage.setItem(this.accessTokenKey, response.tokens.accessToken);
     sessionStorage.setItem(this.refreshTokenKey, response.tokens.refreshToken);

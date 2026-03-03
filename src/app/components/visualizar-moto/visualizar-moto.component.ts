@@ -6,6 +6,7 @@ import { Motorcycle } from '../../models/moto.model';
 import { MotorcyclesService } from '../../services/motorcycles.service';
 import { BrandsService } from '../../services/brands.service';
 import { StoresService } from '../../services/stores.service';
+import { AuthService } from '../../services/auth.service';
 import { Brand } from '../../models/marca.model';
 import { Store } from '../../models/loja.model';
 import { environment } from '../../../environments/environment';
@@ -75,7 +76,16 @@ export class VisualizarMotoComponent implements OnInit {
     private readonly messageService: MessageService,
     private readonly brandsService: BrandsService,
     private readonly storesService: StoresService,
+    private readonly authService: AuthService,
   ) {}
+
+  get isViewerOrClient(): boolean {
+    return this.authService.isViewerOrClient();
+  }
+
+  goBack(): void {
+    this.router.navigate(['/']);
+  }
 
   ngOnInit(): void {
     this.initForm();
@@ -141,8 +151,8 @@ export class VisualizarMotoComponent implements OnInit {
       vin: [''],
       plate: [''],
       km: [null, [Validators.min(0)]],
-      price: [null, [Validators.min(0)]],
-      cost: [null, [Validators.min(0)]],
+      fipePrice: [null, [Validators.min(0)]],
+      suggestedPrice: [null, [Validators.min(0)]],
       documentCost: [null, [Validators.min(0)]],
       maintenanceCost: [null, [Validators.min(0)]],
       downPayment: [null, [Validators.min(0)]],
@@ -207,8 +217,8 @@ export class VisualizarMotoComponent implements OnInit {
       vin: moto.vin ?? '',
       plate: moto.plate ?? '',
       km: toNumber(moto.km),
-      price: toNumber(moto.price),
-      cost: toNumber(moto.cost),
+      fipePrice: toNumber(moto.fipePrice),
+      suggestedPrice: toNumber(moto.suggestedPrice),
       documentCost: toNumber(moto.documentCost),
       maintenanceCost: toNumber(moto.maintenanceCost),
       downPayment: toNumber(moto.downPayment),
@@ -283,8 +293,8 @@ export class VisualizarMotoComponent implements OnInit {
       vin: toStringOrNull(formValue.vin),
       plate: toStringOrNull(formValue.plate),
       km: toNumber(formValue.km),
-      price: toNumber(formValue.price),
-      cost: toNumber(formValue.cost),
+      fipePrice: toNumber(formValue.fipePrice),
+      suggestedPrice: toNumber(formValue.suggestedPrice),
       documentCost: toNumber(formValue.documentCost),
       maintenanceCost: toNumber(formValue.maintenanceCost),
       downPayment: toNumber(formValue.downPayment),
@@ -323,11 +333,17 @@ export class VisualizarMotoComponent implements OnInit {
       return Number.isFinite(parsed) ? parsed : 0;
     };
 
-    const precoBase = toNumber(moto.price);
+    const precoBase = toNumber(moto.fipePrice);
     const doc = toNumber(moto.documentCost);
     const manut = toNumber(moto.maintenanceCost);
     const margem = 2000;
 
     return precoBase + doc + manut + margem;
+  }
+
+  getTotalExpenses(): number {
+    const documentCost = this.form?.get('documentCost')?.value ?? 0;
+    const maintenanceCost = this.form?.get('maintenanceCost')?.value ?? 0;
+    return Number(documentCost) + Number(maintenanceCost);
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BrandsService } from '../../services/brands.service';
+import { AuthService } from '../../services/auth.service';
 import { Brand } from '../../models/marca.model';
 import { Motorcycle, MotorcycleFilters } from '../../models/moto.model';
 import { TabelaPrincipalEstoqueComponent } from '../tabela-principal-estoque/tabela-principal-estoque.component';
@@ -23,8 +24,13 @@ export class HomeComponent implements OnInit {
   constructor(
     private readonly fb: FormBuilder,
     private readonly brandsService: BrandsService,
+    private readonly authService: AuthService,
     private readonly router: Router,
   ) {}
+
+  get isViewerOrClient(): boolean {
+    return this.authService.isViewerOrClient();
+  }
 
   ngOnInit(): void {
     this.filterForm = this.fb.group({

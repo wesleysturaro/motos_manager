@@ -12,8 +12,8 @@ export interface Motorcycle {
   vin?: string | null;
   plate?: string | null;
   km?: number | null;
-  price?: number | string | null;
-  cost?: number | string | null;
+  fipePrice?: number | string | null;
+  suggestedPrice?: number | string | null;
   status?: string;
   fuel?: string | null;
   engineCc?: number | null;

@@ -1,9 +1,9 @@
 <div class="layout">
-  <app-menu-lateral [visible]="sidebarVisible" (navigate)="sidebarVisible = false"></app-menu-lateral>
+  <app-menu-lateral *ngIf="!isViewerOrClient" [visible]="sidebarVisible" (navigate)="sidebarVisible = false"></app-menu-lateral>
 
   <div class="layout__content">
     <header class="layout__header">
-      <button pButton type="button" icon="pi pi-bars" class="p-button-text" (click)="toggleSidebar()"></button>
+      <button *ngIf="!isViewerOrClient" pButton type="button" icon="pi pi-bars" class="p-button-text" (click)="toggleSidebar()"></button>
       <div class="layout__brand">
         <span class="brand-name">Rleo Motos</span>
       </div>

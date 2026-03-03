@@ -9,12 +9,20 @@
   <ng-template #content>
     <div class="page-header" *ngIf="motorcycle">
       <div>
-        <span class="pill">Ficha da moto</span>
+        <button 
+          pButton 
+          type="button" 
+          icon="pi pi-arrow-left" 
+          label="Voltar" 
+          class="p-button-text p-button-sm back-button" 
+          (click)="goBack()"
+        ></button>
+        <span class="pill">{{ isViewerOrClient ? 'Detalhes da Moto' : 'Ficha da moto' }}</span>
         <h2>{{ motorcycle.modelName }}</h2>
         <div class="header-meta">
           <p-tag [value]="motorcycle.status || 'N/D'" [severity]="getStatusSeverity(motorcycle.status)"></p-tag>
-          <span *ngIf="completenessScore">Score: {{ completenessScore }}%</span>
-          <span *ngIf="vendaComLucro">Venda c/ lucro: {{ vendaComLucro | currency: 'BRL' }}</span>
+          <span *ngIf="completenessScore && !isViewerOrClient">Score: {{ completenessScore }}%</span>
+          <span *ngIf="vendaComLucro && !isViewerOrClient">Venda c/ lucro: {{ vendaComLucro | currency: 'BRL' }}</span>
         </div>
       </div>
     </div>
@@ -48,7 +56,58 @@
 
       <div class="col-12 lg:col-7">
         <p-card class="details-card">
-          <form [formGroup]="form" (ngSubmit)="submit()" class="p-fluid grid form-grid">
+          <!-- Visualização simplificada para Viewer/Client -->
+          <div *ngIf="isViewerOrClient" class="client-view">
+            <div class="grid">
+              <div class="col-12">
+                <h3>{{ motorcycle?.brand?.name }} {{ motorcycle?.modelName }}</h3>
+              </div>
+              
+              <div class="col-12 md:col-6">
+                <label>Ano de Fabricação</label>
+                <p class="field-value">{{ motorcycle?.year || '-' }}</p>
+              </div>
+
+              <div class="col-12 md:col-6">
+                <label>Ano Modelo</label>
+                <p class="field-value">{{ motorcycle?.modelYear || '-' }}</p>
+              </div>
+
+              <div class="col-12 md:col-6">
+                <label>Quilometragem</label>
+                <p class="field-value">{{ (motorcycle?.km ?? 0) | number: '1.0-0' }} km</p>
+              </div>
+
+              <div class="col-12 md:col-6">
+                <label>Cor</label>
+                <p class="field-value">{{ motorcycle?.color || '-' }}</p>
+              </div>
+
+              <div class="col-12 md:col-6">
+                <label>Combustível</label>
+                <p class="field-value">{{ motorcycle?.fuel || '-' }}</p>
+              </div>
+
+              <div class="col-12 md:col-6">
+                <label>Transmissão</label>
+                <p class="field-value">{{ motorcycle?.transmission || '-' }}</p>
+              </div>
+
+              <div class="col-12 md:col-6">
+                <label>Freio ABS</label>
+                <p class="field-value">{{ motorcycle?.abs ? 'Sim' : 'Não' }}</p>
+              </div>
+
+              <div class="col-12 md:col-6">
+                <label>Valor</label>
+                <p class="field-value price-highlight">{{ (motorcycle?.suggestedPrice ?? 0) | currency: 'BRL' }}</p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Formulário completo para Admin -->
+          <form *ngIf="!isViewerOrClient" [formGroup]="form" (ngSubmit)="submit()" class="p-fluid grid form-grid">
             <div class="field col-12 md:col-4">
               <label for="storeId">Loja</label>
               <p-dropdown
@@ -135,18 +194,13 @@
             </div>
 
             <div class="field col-12 md:col-4">
-              <label for="price">Preco (FIPE)</label>
-              <p-inputNumber inputId="price" formControlName="price" mode="currency" currency="BRL"></p-inputNumber>
+              <label for="fipePrice">Preço Tabela FIPE</label>
+              <p-inputNumber inputId="fipePrice" formControlName="fipePrice" mode="currency" currency="BRL"></p-inputNumber>
             </div>
 
             <div class="field col-12 md:col-4">
-              <label for="cost">Custo</label>
-              <p-inputNumber inputId="cost" formControlName="cost" mode="currency" currency="BRL"></p-inputNumber>
-            </div>
-
-            <div class="field col-12 md:col-4">
-              <label for="downPayment">Entrada</label>
-              <p-inputNumber inputId="downPayment" formControlName="downPayment" mode="currency" currency="BRL"></p-inputNumber>
+              <label for="suggestedPrice">Preço Sugerido Venda</label>
+              <p-inputNumber inputId="suggestedPrice" formControlName="suggestedPrice" mode="currency" currency="BRL"></p-inputNumber>
             </div>
 
             <div class="field col-12 md:col-4">
@@ -162,6 +216,23 @@
                 mode="currency"
                 currency="BRL"
               ></p-inputNumber>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="totalExpenses">Total Gastos (Calculado)</label>
+              <p-inputNumber 
+                inputId="totalExpenses" 
+                [ngModel]="getTotalExpenses()" 
+                [ngModelOptions]="{standalone: true}" 
+                mode="currency" 
+                currency="BRL" 
+                [disabled]="true"
+              ></p-inputNumber>
+            </div>
+
+            <div class="field col-12 md:col-4">
+              <label for="downPayment">Entrada</label>
+              <p-inputNumber inputId="downPayment" formControlName="downPayment" mode="currency" currency="BRL"></p-inputNumber>
             </div>
 
             <div class="field col-12 md:col-4">
@@ -225,7 +296,7 @@
             </div>
           </form>
 
-          <div class="meta-info" *ngIf="motorcycle">
+          <div class="meta-info" *ngIf="motorcycle && !isViewerOrClient">
             <div>Cadastro: {{ motorcycle.createdAt | date: 'short' }}</div>
             <div>Ultima atualizacao: {{ motorcycle.updatedAt | date: 'short' }}</div>
             <div *ngIf="missingFields.length">Campos pendentes: {{ missingFields.join(', ') }}</div>
